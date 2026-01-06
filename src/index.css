@@ -1,0 +1,21 @@
+@import "tailwindcss";
+
+@theme{
+--color-primary: #303031df;
+--color-brand:  #2d4ce3df;
+}
+
+@utility container{ 
+  margin:auto;
+}
+
+.batchlist div:nth-child(odd){
+ @apply bg-slate-300 rounded-2xl hover:bg-slate-400
+}
+
+.table_bdy tr td{
+  @apply p-3
+}
+.table_bdy tr:nth-child(odd){
+  @apply  bg-blue-400 hover:bg-blue-500 
+}
