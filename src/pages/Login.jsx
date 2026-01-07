@@ -1,22 +1,22 @@
-import React, { useState } from 'react'
-import { FcGoogle } from 'react-icons/fc'
-import { Link, useNavigate } from 'react-router'
+import React, { useState } from "react";
+import { FcGoogle } from "react-icons/fc";
+import { Link, useNavigate } from "react-router";
 import { getAuth, signInWithEmailAndPassword } from "firebase/auth";
-import { toast, ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from "react-toastify";
 
 const Login = () => {
   const navigate = useNavigate();
-  const [logdata,setlogdata] = useState({
-    email : "",
-    password : "",
-  })
-  const [error,seterror] = useState({
-    email:'',
-    password:'',
-  }) 
+  const [logdata, setlogdata] = useState({
+    email: "",
+    password: "",
+  });
+  const [error, seterror] = useState({
+    email: "",
+    password: "",
+  });
   const auth = getAuth();
 
-  const handlesignin=()=>{
+  const handlesignin = () => {
     console.log(logdata);
     signInWithEmailAndPassword(auth, logdata.email, logdata.password)
       .then((response) => {
@@ -25,31 +25,30 @@ const Login = () => {
         } else {
           navigate("/");
         }
-        
       })
       .catch((error) => {
         const errorCode = error.code;
-      if (errorCode == "auth/invalid-email") {
-        return seterror((prev) => ({
-          ...prev,
-          email: "A Valid Email is Required !",
-        }));
-      }
-      if (errorCode == "auth/missing-password") {
-        return seterror((prev) => ({
-          ...prev,
-          password: "Password must be Required !",
-        }));
-      }
-      if (errorCode == "auth/invalid-email") {
-        return seterror((prev) => ({
-          ...prev,
-          email: "Invalid !",
-          password: "Invalid !",
-        }));
-      }
+        if (errorCode == "auth/invalid-email") {
+          return seterror((prev) => ({
+            ...prev,
+            email: "A Valid Email is Required !",
+          }));
+        }
+        if (errorCode == "auth/missing-password") {
+          return seterror((prev) => ({
+            ...prev,
+            password: "Password must be Required !",
+          }));
+        }
+        if (errorCode == "auth/invalid-email") {
+          return seterror((prev) => ({
+            ...prev,
+            email: "Invalid !",
+            password: "Invalid !",
+          }));
+        }
       });
-  }
+  };
   return (
     <div className="h-screen flex items-center justify-center">
       <ToastContainer position="top-right" />
@@ -133,6 +132,6 @@ const Login = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Login
+export default Login;

@@ -7,7 +7,7 @@ const firebaseConfig = {
   projectId: "attendance-eb666",
   storageBucket: "attendance-eb666.firebasestorage.app",
   messagingSenderId: "684430422762",
-  appId: "1:684430422762:web:4c5f0df010fafdb9f71d93"
+  appId: "1:684430422762:web:4c5f0df010fafdb9f71d93",
 };
 
 // Initialize Firebase

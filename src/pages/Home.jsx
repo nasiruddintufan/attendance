@@ -1,40 +1,46 @@
-import React, { useEffect, useState } from 'react'
-import Input from '../components/ui/input'
-import Button from '../components/ui/button'
-import { getDatabase, onValue, push, ref, remove, set } from "firebase/database";
-import ListLoading from '../components/ui/ListLoading';
-import { toast, ToastContainer } from 'react-toastify';
+import React, { useEffect, useState } from "react";
+import Input from "../components/ui/input";
+import Button from "../components/ui/button";
+import {
+  getDatabase,
+  onValue,
+  push,
+  ref,
+  remove,
+  set,
+} from "firebase/database";
+import ListLoading from "../components/ui/ListLoading";
+import { toast, ToastContainer } from "react-toastify";
 
 const Home = () => {
   const db = getDatabase();
-  const [loding,setloading] = useState(true)
-  const [batchname,setbatchname] = useState("")
-  const [batchlist,setbatchlist] = useState([])
-  const handleadd=()=>{
-    if(!batchname){
-      toast.error("Batch Name is Required !")
+  const [loding, setloading] = useState(true);
+  const [batchname, setbatchname] = useState("");
+  const [batchlist, setbatchlist] = useState([]);
+  const handleadd = () => {
+    if (!batchname) {
+      toast.error("Batch Name is Required !");
     }
-    console.log(batchname);
     set(push(ref(db, "batchlist/")), {
       batchname,
-    }).then(()=>{
-      setbatchname("")
+    }).then(() => {
+      setbatchname("");
     });
-  }
-  useEffect(()=>{
+  };
+  useEffect(() => {
     onValue(ref(db, "batchlist/"), (snapshot) => {
-      let arr=[];
-      snapshot.forEach((item)=>{
-      arr.push({ ...item.val(), id: item.key });
-      })
-      setbatchlist(arr)
-      setloading(false)
+      let arr = [];
+      snapshot.forEach((item) => {
+        arr.push({ ...item.val(), id: item.key });
+      });
+      setbatchlist(arr);
+      setloading(false);
     });
-  },[])
+  }, []);
 
-  const handledelet=(id)=>{
-    remove(ref(db,"batchlist/"+id))
-  }
+  const handledelet = (id) => {
+    remove(ref(db, "batchlist/" + id));
+  };
   return (
     <div className="h-screen flex items-center justify-center">
       <ToastContainer />
@@ -87,6 +93,6 @@ const Home = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Home
+export default Home;

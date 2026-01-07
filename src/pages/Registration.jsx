@@ -1,67 +1,85 @@
-import React, { useState } from 'react'
-import { FcGoogle } from 'react-icons/fc'
-import { Link, useNavigate,  } from 'react-router'
-import { getAuth, createUserWithEmailAndPassword, updateProfile, sendEmailVerification } from "firebase/auth";
+import React, { useState } from "react";
+import { FcGoogle } from "react-icons/fc";
+import { Link, useNavigate } from "react-router";
+import {
+  getAuth,
+  createUserWithEmailAndPassword,
+  updateProfile,
+  sendEmailVerification,
+} from "firebase/auth";
 import { getDatabase, ref, set } from "firebase/database";
-import { toast, ToastContainer } from 'react-toastify';
+import { toast, ToastContainer } from "react-toastify";
 
 const Registration = () => {
-    const navigate=useNavigate();
-    const [registerData,setRegisterdata] = useState({
-        fullname:'',
-        email:'',
-        password:'',
-    })
-    const [error,seterror] = useState({
-        fullname:'',
-        email:'',
-        password:'',
-    })
-    const [loading, setloading] = useState(false)
-    const auth = getAuth();
-    const db = getDatabase();
-    const Handlesignup=()=>{
-      setloading(true)
-        seterror({
-            fullname:'',
-            email:'',
-            password:'',
-        })
-        if(!registerData.fullname){
-          setloading(false)
-          return seterror((prev)=>({...prev,fullname:"! Enter Your Full Name"}))
-        }
-    createUserWithEmailAndPassword(auth, registerData.email, registerData.password)
-    
-    .then((res) => {
+  const navigate = useNavigate();
+  const [registerData, setRegisterdata] = useState({
+    fullname: "",
+    email: "",
+    password: "",
+  });
+  const [error, seterror] = useState({
+    fullname: "",
+    email: "",
+    password: "",
+  });
+  const [loading, setloading] = useState(false);
+  const auth = getAuth();
+  const db = getDatabase();
+  const Handlesignup = () => {
+    setloading(true);
+    seterror({
+      fullname: "",
+      email: "",
+      password: "",
+    });
+    if (!registerData.fullname) {
+      setloading(false);
+      return seterror((prev) => ({
+        ...prev,
+        fullname: "! Enter Your Full Name",
+      }));
+    }
+    createUserWithEmailAndPassword(
+      auth,
+      registerData.email,
+      registerData.password
+    )
+      .then((res) => {
         updateProfile(auth.currentUser, {
-            displayName: registerData.fullname
-          }).then(() => 
-            {set(ref(db, "users/" + res.user.uid), {
-            displayName: res.user.displayName,
-            email: res.user.email,
-          }).then(() => {
-            sendEmailVerification(auth.currentUser).then(() => {
-              toast.success(
-                "registration Successfull,Please Verify Your Email"
-              );
-              setTimeout(() => {
-                navigate("/login");
-              }, 4000);
+          displayName: registerData.fullname,
+        })
+          .then(() => {
+            set(ref(db, "users/" + res.user.uid), {
+              displayName: res.user.displayName,
+              email: res.user.email,
+            }).then(() => {
+              sendEmailVerification(auth.currentUser).then(() => {
+                toast.success(
+                  "registration Successfull,Please Verify Your Email"
+                );
+                setTimeout(() => {
+                  navigate("/login");
+                }, 4000);
+              });
             });
-          });
-            
-          }).catch((error) => {});
-    })
+          })
+          .catch((error) => {});
+      })
 
-    .catch((error) => {
-      setloading(false); //eikhan e kn nilo nich theke error er modhhe cilo prothom e 
+      .catch((error) => {
+        setloading(false); //eikhan e kn nilo nich theke error er modhhe cilo prothom e
         const errorCode = error.code;
-        if(errorCode=="auth/invalid-email"){
-            return seterror((prev)=>({...prev,email:"A Valid Email is Required !"}))
+        if (errorCode == "auth/invalid-email") {
+          return seterror((prev) => ({
+            ...prev,
+            email: "A Valid Email is Required !",
+          }));
         }
-        if(errorCode=="auth/missing-email"){
-            return seterror((prev)=>({...prev,email:"A Valid Email is Required !"}))
+        if (errorCode == "auth/missing-email") {
+          return seterror((prev) => ({
+            ...prev,
+            email: "A Valid Email is Required !",
+          }));
         }
         if (errorCode == "auth/email-already-in-use") {
           return seterror((prev) => ({
@@ -69,15 +87,21 @@ const Registration = () => {
             email: "Email is already used",
           }));
         }
-        if(errorCode=="auth/missing-password"){
-            return seterror((prev)=>({...prev,password:"Password is Required !"}))
+        if (errorCode == "auth/missing-password") {
+          return seterror((prev) => ({
+            ...prev,
+            password: "Password is Required !",
+          }));
         }
-        if(errorCode=="auth/weak-password"){
-            return seterror((prev)=>({...prev,password:"Enter a Strong Password"}))
+        if (errorCode == "auth/weak-password") {
+          return seterror((prev) => ({
+            ...prev,
+            password: "Enter a Strong Password",
+          }));
         }
-    })
-}
-    
+      });
+  };
+
   return (
     <div className="h-screen flex items-center justify-center">
       <ToastContainer position="top-right" />
@@ -183,6 +207,6 @@ const Registration = () => {
       </div>
     </div>
   );
-}
+};
 
-export default Registration
+export default Registration;
