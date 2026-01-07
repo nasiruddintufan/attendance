@@ -6,7 +6,7 @@ import Login from "./pages/Login";
 import Registration from "./pages/Registration";
 import Addstudent from "./pages/Addstudent";
 import Attendance from "./pages/Attendance";
-import Attendreport from "./pages/Attendreport";
+
 
 const App = () => {
   return (
@@ -18,7 +18,7 @@ const App = () => {
           <Route index element={<Home />} />
           <Route path="/addstudent" element={<Addstudent />} />
           <Route path="/attendance" element={<Attendance />} />
-          <Route path="/attendance-report" element={<Attendreport/>} />
+
         </Route>
       </Routes>
     </BrowserRouter>
