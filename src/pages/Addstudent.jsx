@@ -23,9 +23,12 @@ const Addstudent = () => {
   }, []);
   const handleaddstudent = () => {
     if (!batchid) return toast.error("Please Select a Batch !");
-    if (!studentname) return toast.error("Enter a NAme !");
+    if (!studentname.trim()) return toast.error("Enter a NAme !");
     set(push(ref(db, "studentlist/" + batchid)), {
       studentname,
+    }).then(() => {
+      setstudentname(""); 
+      
     });
   };
 
@@ -61,6 +64,7 @@ const Addstudent = () => {
         </div>
         <div className="mt-5 flex items-center gap-3">
           <Input
+          value={studentname}
             onChange={(e) => setstudentname(e.target.value)}
             label="Student Name"
           />

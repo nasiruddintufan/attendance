@@ -47,13 +47,14 @@ const Attendance = () => {
     })
     setstudentlist(attendupdate)
   }
-  const handleattendance=()=>{
+  const handleattendance=(attenddate)=>{
     if(!batchid) return toast.error("Please select a Batch !")
     if(!attenddate) return toast.error("Please select a date !")
-      set(push(ref(db, "studentlist/" + batchid)), {
-            attenddate,
-            studentlist,
-          });
+      set(push(ref(db, "attendance/" + batchid)), {
+        attenddate,
+        studentlist,
+      });
+
   }
   return (
     <section className="mt-10">
@@ -77,9 +78,9 @@ const Attendance = () => {
           <table className="w-full">
             <thead>
               <tr>
-                <th className="pb-5">SL.no</th>
-                <th className="pb-5">Student Name</th>
-                <th className="pb-5 w-[15%]">Attendance</th>
+                <th className="pb-5 text-start">SL.no</th>
+                <th className="pb-5 text-start">Student Name</th>
+                <th className="pb-5  text-start w-[15%]">Attendance</th>
               </tr>
             </thead>
             <tbody className="table_bdy">
@@ -100,7 +101,7 @@ const Attendance = () => {
             </tbody>
           </table>
           <div className="flex justify-end mt-5">
-            <Button onClick={handleattendance}>Submit</Button>
+            <Button onClick={() => handleattendance(attenddate)}>Submit</Button>
           </div>
         </div>
       </div>
